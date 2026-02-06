@@ -1,0 +1,6 @@
+*.gz
+*.txt
+domain_counts*.json
+public_domains.json
+cluster.idx
+*.idx

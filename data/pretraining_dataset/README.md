@@ -1,0 +1,61 @@
+# Collection methodology
+- collecting data from commoncrawl index
+- contains 68M URLs with year or their crawling by commoncrawl
+- crawl group - specific by year-crawlid
+    - corresponds to one month
+    - contains 300 shards of data that are alphabetically ordered URLs with metadata
+    - these URLs correspond to the actual URL that was used for crawling
+    - contains query parameters, paths, ...
+    - contains only http/https
+- which are picked?
+    - randomly choosing from years and months from 2020 to 2025
+    - randomly choosing from shards
+    - only URLs those whose content was actually crawled - 200 status are retained
+    - only MAX_PER_DOMAIN (70) URLs are allowed per second level domain / same IP. If URL is deemed harded - longer or contains query parameters, SECOND_MAX_PER_DOMAIN (150) of URLs per domain in total are allowed
+    - duplicates are removed
+- dataset is shuffled
+- for year URL, year of collection is preserved
+- removal of some URLs due to information leakage to evaluation set of fine-tuning dataset
+    - since we use cross-validation, every part of fine-tuning dataset is evaluation set at certain point - we treat whole fine-tuning dataset as evaluation set
+    - if we pre-trained on a lot of URLs containing second level "google", then the model could create a token named "google"
+    - if then malicious URL decided to do hyphen attack goo-gle, there would be different tokenization for the domain
+    - this would give information to the fine-tuning part, that based on this domain part split, there is maybe sth going on
+    - furthermore, if there were during pretraining URLs from evaluation set, the model would inherently understand the structure of these specific URLs better than if that was not the case - information leakage
+    - possible counter argument - is this not a good behaviour? Maybe for common domain, it should learn its tokens to be more efficient on them?
+        - for common domains, the earlier parts of the pipeline should already block it / allow it based on lists or external domain data
+        - the recommender based model should only handle the cases, where the domains are new - not really many informations about them - we want to simulate that during evaluation
+        - --> there should be as little leakage as possible
+        - since there is only 3.9% duplication between private fine-tuning dataset (both standard and test set) and this dataset (because of pretraining domain subsampling), we can simply remove intersection from here without any problems
+        
+# Used shards
+- each shard roughly 1GB compressed - 8 milion rows
+- prefix-year-crawlnum-month-shardid
+    - CC-MAIN-2022-49-11-00065.gz
+    - CC-MAIN-2023-06-01-00000.gz
+    - CC-MAIN-2025-05-01-00000.gz
+    - CC-MAIN-2025-30-07-00000.gz
+    - CC-MAIN-2025-05-01-00099.gz
+    - CC-MAIN-2025-05-01-00113.gz
+    - CC-MAIN-2025-05-01-00253.gz
+    - CC-MAIN-2025-08-02-00110.gz
+    - CC-MAIN-2025-08-02-00141.gz
+    - CC-MAIN-2025-26-06-00216.gz
+    - CC-MAIN-2023-14-03-00150.gz
+    - CC-MAIN-2024-10-02-00135.gz
+    - CC-MAIN-2024-10-02-00217.gz
+    - CC-MAIN-2024-46-11-00136.gz
+    - CC-MAIN-2022-49-11-00091.gz
+    - CC-MAIN-2022-49-11-00155.gz
+    - CC-MAIN-2020-34-08-00112.gz
+    - CC-MAIN-2020-40-09-00200.gz
+    - CC-MAIN-2020-40-09-00295.gz
+    - CC-MAIN-2020-50-11-00069.gz
+    - CC-MAIN-2021-17-04-00052.gz
+    - CC-MAIN-2021-25-06-00086.gz
+    - CC-MAIN-2021-43-10-00166.gz
+    - CC-MAIN-2022-05-01-00291.gz
+    - CC-MAIN-2022-21-05-00018.gz
+    - CC-MAIN-2022-21-05-00198.gz
+    - CC-MAIN-2022-27-06-00018.gz
+    - CC-MAIN-2022-33-08-00066.gz
+    - CC-MAIN-2024-46-11-00152.gz
