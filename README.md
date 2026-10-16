@@ -1,5 +1,5 @@
-# From Lab to Production: Malicious URL Detection on Real-World Data
-This codebase was used for the paper "From Lab to Production: Malicious URL Detection on Real-World Data"
+# Site-Aware URL Evaluation: Site-Aware Evaluation Protocol for String-Based Malicious URL Detection
+This codebase was used for the paper "Site-Aware URL Evaluation: Site-Aware Evaluation Protocol for String-Based Malicious URL Detection"
 
 In this paper we trained and evaluated several models on malicious URL detection task in smaller variants (4M to 29M parameters).
 These models are:

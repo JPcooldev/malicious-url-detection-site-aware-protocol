@@ -1,6 +1,6 @@
 # How to Contribute
 
-This repository serves as a public release of the codebase used for the paper "From Lab to Production: Malicious URL Detection on Real-World Data". Therefore, we do not plan to make any major changes to this library. However, we can accept small patches related to
+This repository serves as a public release of the codebase used for the paper "Site-Aware URL Evaluation: Site-Aware Evaluation Protocol for String-Based Malicious URL Detection". Therefore, we do not plan to make any major changes to this library. However, we can accept small patches related to
 re-factoring and documentation. To submit contributions, there are just a few
 small guidelines you need to follow.
 
